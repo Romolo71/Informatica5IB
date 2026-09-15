@@ -1,3 +1,677 @@
-body{
-    background-color: bisque;
+/* ==================================================
+   RESET
+================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --background: #07090f;
+    --card: #10131d;
+    --card-hover: #151927;
+
+    --text: #f4f5fb;
+    --text-secondary: #8b91a1;
+
+    --purple: #745cff;
+    --purple-light: #a398ff;
+
+    --green: #54e59a;
+
+    --border: rgba(255, 255, 255, 0.07);
+}
+
+/* CUSTOM SELECTION COLOR*/
+::selection {
+  background-color: var(--purple); 
+  color: var(--text);           
+}
+
+/* Specifico per Firefox */
+::-moz-selection {
+  background-color: var(--purple); 
+  color: var(--text);   
+}
+
+
+/* ==================================================
+   BODY
+================================================== */
+
+body {
+
+    min-height: 100vh;
+
+    padding: 65px 7%;
+
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    color: var(--text);
+
+    background:
+
+        radial-gradient(
+            circle at 15% 0%,
+            rgba(116, 92, 255, 0.15),
+            transparent 28%
+        ),
+
+        radial-gradient(
+            circle at 90% 15%,
+            rgba(42, 133, 255, 0.07),
+            transparent 25%
+        ),
+
+        var(--background);
+
+    overflow-x: hidden;
+}
+
+
+/* ==================================================
+   TITOLO
+================================================== */
+
+h1 {
+
+    max-width: 1400px;
+
+    margin:
+        0 auto
+        55px;
+
+    font-size:
+        clamp(3rem, 7vw, 5.5rem);
+
+    font-weight: 850;
+
+    letter-spacing: -5px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #ffffff,
+            #b2aaff,
+            #ffffff
+        );
+
+    background-size: 200% auto;
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+
+    animation:
+        titoloEntrata
+        0.8s
+        cubic-bezier(.16, 1, .3, 1),
+
+        titoloGradient
+        5s
+        linear
+        infinite;
+}
+
+
+@keyframes titoloEntrata {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(-25px);
+
+        filter: blur(7px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+
+        filter: blur(0);
+    }
+}
+
+
+@keyframes titoloGradient {
+
+    to {
+        background-position: 200% center;
+    }
+}
+
+
+/* ==================================================
+   GRIGLIA
+================================================== */
+
+#risultato {
+
+    max-width: 1400px;
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(280px, 1fr)
+        );
+
+    gap: 25px;
+}
+
+
+/* ==================================================
+   CARD
+================================================== */
+
+.prodotto {
+
+    position: relative;
+
+    min-height: 230px;
+
+    padding: 26px;
+
+    display: flex;
+    flex-direction: column;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(22, 26, 39, 0.96),
+            rgba(12, 15, 23, 0.98)
+        );
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 22px;
+
+    overflow: hidden;
+
+    cursor: pointer;
+
+    opacity: 0;
+
+    animation:
+        entrataCard
+        0.7s
+        cubic-bezier(.16, 1, .3, 1)
+        forwards;
+
+    transition:
+        transform
+        0.4s
+        cubic-bezier(.16, 1, .3, 1),
+
+        border-color
+        0.35s ease,
+
+        box-shadow
+        0.4s ease;
+}
+
+
+/* ==================================================
+   ENTRATA CARD
+================================================== */
+
+@keyframes entrataCard {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(45px)
+            scale(0.94);
+
+        filter: blur(6px);
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+
+        filter: blur(0);
+    }
+}
+
+
+/* ==================================================
+   GLOW
+================================================== */
+
+.prodotto::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 220px;
+    height: 220px;
+
+    top: -160px;
+    right: -160px;
+
+    border-radius: 50%;
+
+    background:
+        var(--purple);
+
+    filter:
+        blur(65px);
+
+    opacity: 0;
+
+    transition:
+        opacity 0.4s ease,
+        transform 0.6s ease;
+
+    pointer-events: none;
+}
+
+
+.prodotto:hover::before {
+
+    opacity: 0.4;
+
+    transform:
+        translate(-80px, 80px)
+        scale(1.5);
+}
+
+
+/* ==================================================
+   SHINE EFFECT
+================================================== */
+
+.prodotto::after {
+
+    content: "";
+
+    position: absolute;
+
+    top: -30%;
+    left: -120%;
+
+    width: 60%;
+    height: 160%;
+
+    background:
+
+        linear-gradient(
+            110deg,
+            transparent,
+            rgba(255,255,255,0.07),
+            transparent
+        );
+
+    transform:
+        rotate(15deg);
+
+    transition:
+        left 0.8s ease;
+
+    pointer-events: none;
+}
+
+
+.prodotto:hover::after {
+
+    left: 150%;
+}
+
+
+/* ==================================================
+   HOVER CARD
+================================================== */
+
+.prodotto:hover {
+
+    transform:
+        translateY(-10px)
+        scale(1.025);
+
+    border-color:
+        rgba(116, 92, 255, 0.55);
+
+    box-shadow:
+
+        0 30px 70px
+        rgba(0, 0, 0, 0.45),
+
+        0 0 40px
+        rgba(116, 92, 255, 0.12);
+}
+
+
+/* ==================================================
+   CATEGORIA
+================================================== */
+
+.categoria {
+
+    position: relative;
+
+    width: fit-content;
+
+    margin-bottom: 25px;
+
+    padding:
+        7px 12px;
+
+    border-radius: 100px;
+
+    font-size: 0.72rem;
+
+    font-weight: 700;
+
+    letter-spacing: 0.7px;
+
+    text-transform: uppercase;
+
+    color:
+        var(--purple-light);
+
+    background:
+        rgba(116, 92, 255, 0.10);
+
+    border:
+        1px solid
+        rgba(116, 92, 255, 0.18);
+
+    transition:
+        background 0.3s ease,
+        transform 0.3s ease;
+}
+
+
+.prodotto:hover .categoria {
+
+    background:
+        rgba(116, 92, 255, 0.18);
+
+    transform:
+        translateY(-2px);
+}
+
+
+/* ==================================================
+   NOME
+================================================== */
+
+.prodotto h2 {
+
+    position: relative;
+
+    font-size: 1.45rem;
+
+    font-weight: 750;
+
+    letter-spacing: -0.5px;
+
+    transition:
+        color 0.3s ease,
+        transform 0.3s ease;
+}
+
+
+.prodotto:hover h2 {
+
+    color:
+        #c2bcff;
+
+    transform:
+        translateX(4px);
+}
+
+
+/* ==================================================
+   SEPARATORE
+================================================== */
+
+.separatore {
+
+    width: 100%;
+
+    height: 1px;
+
+    margin:
+        auto 0
+        20px;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,0.08),
+            transparent
+        );
+}
+
+
+/* ==================================================
+   FOOTER CARD
+================================================== */
+
+.footer-prodotto {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content:
+        space-between;
+
+    gap: 15px;
+}
+
+
+/* ==================================================
+   DISPONIBILE
+================================================== */
+
+.disponibile {
+
+    color:
+        var(--green);
+
+    font-size:
+        0.78rem;
+
+    font-weight:
+        600;
+}
+
+
+/* ==================================================
+   PREZZO
+================================================== */
+
+.prezzo {
+
+    font-size:
+        1.35rem;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        -0.7px;
+
+    color:
+        white;
+
+    transition:
+        transform 0.3s ease,
+        color 0.3s ease;
+}
+
+
+.prodotto:hover .prezzo {
+
+    transform:
+        scale(1.08);
+
+    color:
+        var(--purple-light);
+}
+
+
+/* ==================================================
+   ERRORE
+================================================== */
+
+.errore {
+
+    grid-column:
+        1 / -1;
+
+    padding:
+        40px;
+
+    text-align:
+        center;
+
+    border:
+        1px solid
+        rgba(255, 90, 90, 0.2);
+
+    border-radius:
+        20px;
+
+    background:
+        rgba(255, 70, 70, 0.05);
+}
+
+
+.errore h2 {
+
+    margin-bottom:
+        10px;
+
+    color:
+        #ff7474;
+}
+
+
+.errore p {
+
+    color:
+        var(--text-secondary);
+}
+
+
+/* ==================================================
+   SCROLLBAR
+================================================== */
+
+::-webkit-scrollbar {
+
+    width:
+        8px;
+}
+
+
+::-webkit-scrollbar-track {
+
+    background:
+        var(--background);
+}
+
+
+::-webkit-scrollbar-thumb {
+
+    border-radius:
+        20px;
+
+    background:
+
+        linear-gradient(
+            #383052,
+            #6856d4
+        );
+}
+
+
+/* ==================================================
+   RESPONSIVE
+================================================== */
+
+@media (max-width: 700px) {
+
+    body {
+
+        padding:
+            40px 20px;
+    }
+
+
+    h1 {
+
+        margin-bottom:
+            35px;
+
+        letter-spacing:
+            -3px;
+    }
+
+
+    #risultato {
+
+        grid-template-columns:
+            1fr;
+
+        gap:
+            18px;
+    }
+
+
+    .prodotto {
+
+        min-height:
+            210px;
+    }
+}
+
+
+/* ==================================================
+   ACCESSIBILITÀ
+================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration:
+            0.01ms !important;
+
+        transition-duration:
+            0.01ms !important;
+    }
 }

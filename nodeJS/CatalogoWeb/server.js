@@ -25,8 +25,8 @@ const server = http.createServer((req, res) => {
                 }
             });
 
-        } else if (req.url === "/js-scripts/client.js") {
-            fs.readFile(path.join(ROOT, "js-scripts", "client.js"), (error, data) => {
+        } else if (req.url === "/client.js") {
+            fs.readFile(path.join(__dirname + "/client.js"), (error, data) => {
                 if (error) {
                     res.writeHead(404);
                     res.write(error.toString());
@@ -51,8 +51,8 @@ const server = http.createServer((req, res) => {
                 }
             });
 
-        } else if (req.url === "/views/prodotti.json") {
-            fs.readFile(path.join(ROOT, "views", "prodotti.json"), (error, data) => {
+        } else if (req.url === "/prodotti.json") {
+            fs.readFile(path.join(__dirname + "/prodotti.json"), (error, data) => {
                 if (error) {
                     res.writeHead(404);
                     res.write(error.toString());
