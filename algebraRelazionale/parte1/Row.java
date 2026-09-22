@@ -8,9 +8,12 @@ public class Row {
         this.values = values;
     }
 
-    //TODO: Implement the getValue method to return the value of the specified column name
-    public String getValue(int columnIndex) {
-        return values.get(columnIndex);
+    @Override 
+    public String toString(){
+        String out = "";
+        for (int i = 0; i < values.size(); i++) {
+            out += values.get(i) + "";
+        }
+        return out;
     }
-    
 }

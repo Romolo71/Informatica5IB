@@ -38,8 +38,7 @@ public class CSVLoader {
 
         try {
             // * Apre il file e crea un buffer per leggerlo riga per riga
-            BufferedReader br =
-                    new BufferedReader(new FileReader(this.file));
+            BufferedReader br = new BufferedReader(new FileReader(this.file));
 
             String line;
 
@@ -53,8 +52,13 @@ public class CSVLoader {
                 String[] campi = line.split(",");
                 
                 
+
                 // * Converto "campi" in una List<String>
                 List<String> campiList = Arrays.asList(campi);
+                
+                System.out.println("Lista: ");
+                System.out.println(campiList);
+
                 // * e la aggiungo a "records"
                 records.add(campiList);
 
@@ -67,18 +71,21 @@ public class CSVLoader {
                 //? Fare for per aggiungere man mano che creo
                 //? oggetti ROW
                 loaded.setHeader(records.get(0));
+                ArrayList<Row> temp = new ArrayList<>();
                 for (int i = 1; i < records.size(); i++) {
                     Row r = new Row(records.get(i));
-                    loaded.addRow(r);
+                    temp.add(r);
                 }
+                loaded.setRows(temp);
             }
             br.close();
+            
 
         } catch (Exception e) {
 
             // ! Viene eseguito se si verifica un errore durante
             // ! l'apertura o la lettura del file
-            System.out.println("can't load " + this.file);
+            System.out.println("can't load " + this.file + " - error: " + e);
         }
 
         // * Restituisce la Relation caricata
