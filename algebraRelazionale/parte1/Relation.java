@@ -62,7 +62,7 @@ public class Relation {
      * * PROIEZIONE: crea una relazione con le sole colonne richieste.
      * * Le righe duplicate nel risultato vengono eliminate.
      */
-    public Relation project(List<String> attributes) {
+    private Relation project(List<String> attributes) {
         ArrayList<Integer> attributeIndexes = new ArrayList<>();
 
         // * Trova una volta sola la posizione di ogni colonna richiesta.
@@ -101,7 +101,7 @@ public class Relation {
      * * Permette di chiamare project("nome", "città")
      * * oltre a project(List.of("nome", "città")).
      */
-    public Relation project(String... attributes) { //! ... indica che ammette un numero variabile di argomenti
+    public Relation project(String... attributes) { //! RICORDA: "..." indica che ammette un numero variabile di argomenti
         return project(Arrays.asList(attributes));
     }
 
@@ -191,9 +191,18 @@ public class Relation {
         out += "\n";
 
         for (int i = 0; i < rows.size(); i++) {
-            out += rows.get(i) + "\n";
+            out += rows.get(i) + " \n";
         }
 
         return out;
+    }
+    
+    /**
+     * * Prodotto Cartesiano:
+     * * Nella relazione finale tutti gli attributi delle due
+     * * relazioni + tutte le combinazioni degli attributi
+     */
+    public Relation product(){
+
     }
 }

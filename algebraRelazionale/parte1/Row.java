@@ -12,7 +12,7 @@ public class Row {
     public String toString(){
         String out = "";
         for (int i = 0; i < values.size(); i++) {
-            out += values.get(i) + "";
+            out += values.get(i) + " ";
         }
         return out;
     }
