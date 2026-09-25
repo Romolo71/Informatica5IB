@@ -101,7 +101,7 @@ public class Relation {
      * * Permette di chiamare project("nome", "città")
      * * oltre a project(List.of("nome", "città")).
      */
-    public Relation project(String... attributes) {
+    public Relation project(String... attributes) { //! ... indica che ammette un numero variabile di argomenti
         return project(Arrays.asList(attributes));
     }
 
