@@ -54,10 +54,10 @@ public class CSVLoader {
 
                 // * Converto "campi" in una List<String>
                 List<String> campiList = Arrays.asList(campi);
-                
+                /* 
                 System.out.println("Lista: ");
                 System.out.println(campiList);
-
+                */
                 // * e la aggiungo a "records"
                 records.add(campiList);
 

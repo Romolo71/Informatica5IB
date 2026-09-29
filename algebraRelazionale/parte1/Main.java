@@ -3,8 +3,8 @@ public class Main {
     public static void main(String[] args) {
         Relation persone = new CSVLoader("Persone.csv").loadCSVinRelation();
         Relation altrePersone = new CSVLoader("Persone2.csv").loadCSVinRelation();
-        Relation ordini = new CSVLoader("Ordini").loadCSVinRelation();
-        Relation prodotti = new CSVLoader("Prodotti").loadCSVinRelation();
+        Relation ordini = new CSVLoader("Ordini.csv").loadCSVinRelation();
+        Relation prodotti = new CSVLoader("Prodotti.csv").loadCSVinRelation();
 
         int prezzoMax = 0;
         String idProdottoCostoso = "";
@@ -24,10 +24,10 @@ public class Main {
         System.out.println("=== Difference: persone non presenti in altre persone === \n ");
         System.out.println(persone.difference(altrePersone));
 
-        System.out.println("=== Prodotto === \n ");
+        System.out.println("=== Prodotto: Persone e Prodotti === \n ");
         System.out.println(persone.prodotto(prodotti).toString());
 
-        System.out.println("=== Joint === \n ");
+        System.out.println("=== Joint: Unione di Ordini e Prodotti con \"id_prodotto\" come attributo in comune === \n ");
         String[] join1 = {"id_prodotto", "id_prodotto"};
         Relation joinOrdiniProdotti = ordini.join(prodotti, join1);
         System.out.println(joinOrdiniProdotti.toString());
@@ -51,7 +51,7 @@ public class Main {
 
             }
         }
-        System.out.println("tot: " + totaleGenerale + "\n");
+        System.out.println("Ci sono un totale di " + totaleGenerale + " ordini \n");
 
         System.out.println("=== Visualizzare totale singolo === \n ");
         for (int i = 0; i < ordini.getRows().size(); i++) {
@@ -70,7 +70,7 @@ public class Main {
             }
         }
 
-        System.out.println("=== Visualizzare acquirenti del piu costoso === \n ");
+        System.out.println("\n=== Visualizzare acquirenti del piu costoso === \n ");
          
         for (int i = 0; i < prodotti.getRows().size(); i++) {
 
@@ -83,7 +83,7 @@ public class Main {
             }
         }
 
-        System.out.println("\n utenti che hanno acquisto il prodotto piu costoso");
+        System.out.println("Gli utenti che hanno acquisto il prodotto piu costoso sono: ");
 
         for (int i = 0; i < ordini.getRows().size(); i++) {
 
@@ -96,7 +96,7 @@ public class Main {
                     Row persona = persone.getRows().get(j);
 
                     if (persona.getValue(0).equals(idUtente)) {
-                        System.out.println(persona.getValue(1) + " " + persona.getValue(2));
+                        System.out.println("- " + persona.getValue(1) + " " + persona.getValue(2));
                     }
                 }
             }
