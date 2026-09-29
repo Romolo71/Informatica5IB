@@ -27,6 +27,10 @@ public class Relation {
         this.rows = new ArrayList<>(rows);
     }
 
+    public ArrayList<Row> getRows() {
+        return rows;
+    }
+
     /** * Aggiunge una riga alla relazione. */
     public void addRow(Row rowToAdd) {
         this.rows.add(rowToAdd);
@@ -193,49 +197,49 @@ public class Relation {
      */
     
     @Override
-public String toString() {
-    int[] larghezze = new int[header.size()];
+    public String toString() {
+        int[] larghezze = new int[header.size()];
 
-    // Trova la larghezza necessaria per ogni colonna
-    for (int col = 0; col < header.size(); col++) {
-        larghezze[col] = String.valueOf(header.get(col)).length();
+        // Trova la larghezza necessaria per ogni colonna
+        for (int col = 0; col < header.size(); col++) {
+            larghezze[col] = String.valueOf(header.get(col)).length();
 
-        for (Row row : rows) {
-            if (col < row.values.size()) {
-                int lunghezza = String.valueOf(row.values.get(col)).length();
-                larghezze[col] = Math.max(larghezze[col], lunghezza);
+            for (Row row : rows) {
+                if (col < row.values.size()) {
+                    int lunghezza = String.valueOf(row.values.get(col)).length();
+                    larghezze[col] = Math.max(larghezze[col], lunghezza);
+                }
             }
         }
-    }
 
-    StringBuilder out = new StringBuilder();
+        StringBuilder out = new StringBuilder();
 
-    // Intestazione
-    for (int col = 0; col < header.size(); col++) {
-        out.append(String.format("| %-" + larghezze[col] + "s ", header.get(col)));
-    }
-    out.append("|\n");
-
-    // Separatore
-    for (int larghezza : larghezze) {
-        out.append("+-").append("-".repeat(larghezza)).append("-");
-    }
-    out.append("+\n");
-
-    // Righe
-    for (Row row : rows) {
+        // Intestazione
         for (int col = 0; col < header.size(); col++) {
-            String valore = col < row.values.size()
-                    ? String.valueOf(row.values.get(col))
-                    : "";
-
-            out.append(String.format("| %-" + larghezze[col] + "s ", valore));
+            out.append(String.format("| %-" + larghezze[col] + "s ", header.get(col)));
         }
         out.append("|\n");
-    }
 
-        return out.toString();
-}
+        // Separatore
+        for (int larghezza : larghezze) {
+            out.append("+-").append("-".repeat(larghezza)).append("-");
+        }
+        out.append("+\n");
+
+        // Righe
+        for (Row row : rows) {
+            for (int col = 0; col < header.size(); col++) {
+                String valore = col < row.values.size()
+                        ? String.valueOf(row.values.get(col))
+                        : "";
+
+                out.append(String.format("| %-" + larghezze[col] + "s ", valore));
+            }
+            out.append("|\n");
+        }
+
+            return out.toString();
+    }
     
     /**
      * * Prodotto Cartesiano:

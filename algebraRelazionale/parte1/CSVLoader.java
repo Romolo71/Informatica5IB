@@ -28,7 +28,6 @@ public class CSVLoader {
         // * Relation che verrà popolata con i dati letti dal CSV
          Relation loaded = new Relation();
 
-        // TODO: Salvare qui le righe lette dal CSV
         // ? Ogni elemento esterno rappresenta una riga
         // ? Ogni lista interna contiene i campi di quella riga
         List<List<String>> records = new ArrayList<>();
