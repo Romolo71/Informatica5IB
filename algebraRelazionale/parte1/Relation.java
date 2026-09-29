@@ -9,8 +9,8 @@ public class Relation {
      * * L'header contiene i nomi degli attributi; rows contiene le righe.
      */
     public Relation(List<String> header, ArrayList<Row> rows) {
-        this.header = new ArrayList<>();
-        this.rows = new ArrayList<>();
+        this.header = new ArrayList<>(header);
+        this.rows = new ArrayList<>(rows);
     }
 
     public Relation(){
@@ -289,20 +289,25 @@ public class Relation {
      */
 
     public Relation join(Relation other, String[] joinField) {
+        int pos1 = this.header.indexOf(joinField[0]);
+        int pos2 = other.header.indexOf(joinField[1]);
+
+        if (pos1 == -1 || pos2 == -1) {
+            throw new IllegalArgumentException("Campo di join non trovato");
+        }
+
         Relation prodotto = this.prodotto(other);
-
-        int pos1 = prodotto.header.indexOf(joinField[0]);
-        int pos2 = prodotto.header.lastIndexOf(joinField[1]);
-
         ArrayList<Row> righe = new ArrayList<>();
 
-        for (int i = 0; i < prodotto.rows.size(); i++) {
-            Row r = prodotto.rows.get(i);
-            if (r.getValue(pos1).equals(r.getValue(pos2))) {
+        // Le colonne di "other" vengono dopo tutte le colonne di "this"
+        int pos2NelProdotto = this.header.size() + pos2;
+
+        for (Row r : prodotto.rows) {
+            if (r.getValue(pos1).equals(r.getValue(pos2NelProdotto))) {
                 righe.add(r);
             }
         }
-
+        
         return new Relation(prodotto.getHeader(), righe);
     }
 }
