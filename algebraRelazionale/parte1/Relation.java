@@ -191,21 +191,51 @@ public class Relation {
      * * Converte la relazione in testo:
      * * prima l'header, poi una riga per ogni elemento di rows.
      */
+    
     @Override
-    public String toString() {
-        String out = "";
+public String toString() {
+    int[] larghezze = new int[header.size()];
 
-        for (int i = 0; i < header.size(); i++) {
-            out += header.get(i) + " ";
+    // Trova la larghezza necessaria per ogni colonna
+    for (int col = 0; col < header.size(); col++) {
+        larghezze[col] = String.valueOf(header.get(col)).length();
+
+        for (Row row : rows) {
+            if (col < row.values.size()) {
+                int lunghezza = String.valueOf(row.values.get(col)).length();
+                larghezze[col] = Math.max(larghezze[col], lunghezza);
+            }
         }
-        out += "\n";
-
-        for (int i = 0; i < rows.size(); i++) {
-            out += rows.get(i) + " \n";
-        }
-
-        return out;
     }
+
+    StringBuilder out = new StringBuilder();
+
+    // Intestazione
+    for (int col = 0; col < header.size(); col++) {
+        out.append(String.format("| %-" + larghezze[col] + "s ", header.get(col)));
+    }
+    out.append("|\n");
+
+    // Separatore
+    for (int larghezza : larghezze) {
+        out.append("+-").append("-".repeat(larghezza)).append("-");
+    }
+    out.append("+\n");
+
+    // Righe
+    for (Row row : rows) {
+        for (int col = 0; col < header.size(); col++) {
+            String valore = col < row.values.size()
+                    ? String.valueOf(row.values.get(col))
+                    : "";
+
+            out.append(String.format("| %-" + larghezze[col] + "s ", valore));
+        }
+        out.append("|\n");
+    }
+
+        return out.toString();
+}
     
     /**
      * * Prodotto Cartesiano:
