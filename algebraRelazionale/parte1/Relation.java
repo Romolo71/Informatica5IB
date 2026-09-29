@@ -8,7 +8,12 @@ public class Relation {
      * * Crea una relazione vuota.
      * * L'header contiene i nomi degli attributi; rows contiene le righe.
      */
-    public Relation() {
+    public Relation(List<String> header, ArrayList<Row> rows) {
+        this.header = new ArrayList<>();
+        this.rows = new ArrayList<>();
+    }
+
+    public Relation(){
         this.header = new ArrayList<>();
         this.rows = new ArrayList<>();
     }
@@ -30,6 +35,11 @@ public class Relation {
     /** * Imposta i nomi degli attributi creando una copia della lista. */
     public void setHeader(List<String> header) {
         this.header = new ArrayList<>(header);
+    }
+
+    /** * Metodo getter dell'header per averne accesso */
+    public List<String> getHeader(){
+        return header;
     }
 
     /**
@@ -202,7 +212,63 @@ public class Relation {
      * * Nella relazione finale tutti gli attributi delle due
      * * relazioni + tutte le combinazioni degli attributi
      */
-    public Relation product(){
+    public Relation prodotto(Relation other) {
+        Relation ris = new Relation();
+        ArrayList<String> newHeader = new ArrayList<>();
 
+        for (int i = 0; i < header.size(); i++) {
+            newHeader.add(header.get(i));
+        }
+
+        for (int i = 0; i < other.header.size(); i++) {
+            newHeader.add(other.header.get(i));
+        }
+
+        ArrayList<Row> newRows = new ArrayList<>();
+
+        for (int i = 0; i < rows.size(); i++) {
+
+            for (int j = 0; j < other.rows.size(); j++) {
+                ArrayList<String> values = new ArrayList<>();
+
+                for (int k = 0; k < rows.get(i).getValues().size(); k++) {
+                    values.add(rows.get(i).getValues().get(k));
+                }
+                for (int k = 0; k < other.rows.get(j).getValues().size(); k++) {
+                    values.add(other.rows.get(j).getValues().get(k));
+                }
+                newRows.add(new Row(values));
+            }
+        }
+
+        ris.setHeader(newHeader);
+        ris.setRows(newRows);
+
+        return ris;
+    }
+
+    /**
+     * * Joint:
+     * * Nella relazione finale si ottiene una tabella data
+     * * dall'unione della prima relazione e la seconda in
+     * * base ad un valore comune
+     */
+
+    public Relation join(Relation other, String[] joinField) {
+        Relation prodotto = this.prodotto(other);
+
+        int pos1 = prodotto.header.indexOf(joinField[0]);
+        int pos2 = prodotto.header.lastIndexOf(joinField[1]);
+
+        ArrayList<Row> righe = new ArrayList<>();
+
+        for (int i = 0; i < prodotto.rows.size(); i++) {
+            Row r = prodotto.rows.get(i);
+            if (r.getValue(pos1).equals(r.getValue(pos2))) {
+                righe.add(r);
+            }
+        }
+
+        return new Relation(prodotto.getHeader(), righe);
     }
 }

@@ -8,6 +8,14 @@ public class Row {
         this.values = values;
     }
 
+    public String getValue(int index) {
+        return values.get(index);
+    }
+
+    public List<String> getValues() {
+        return values;
+    }
+
     @Override 
     public String toString(){
         String out = "";
