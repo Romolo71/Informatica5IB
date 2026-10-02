@@ -73,6 +73,83 @@ public class Relation {
     }
 
     /**
+     * * SELEZIONE NUMERICA: mantiene le righe che rispettano la condizione.
+     * * Esempio: selection("età", ">=", 18).
+     */
+    public Relation selection(String attribute, String operator, double value) {
+        int attributeIndex = header.indexOf(attribute);
+
+        // ! La colonna richiesta deve esistere.
+        if (attributeIndex == -1) {
+            throw new IllegalArgumentException(
+                    "Attributo non presente: " + attribute
+            );
+        }
+
+        // ! Controlla l'operatore anche se la relazione è vuota.
+        if (!Arrays.asList(">", "<", ">=", "<=", "==", "!=").contains(operator)) {
+            throw new IllegalArgumentException(
+                    "Operatore non valido: " + operator
+            );
+        }
+
+        Relation result = new Relation();
+        result.setHeader(header);
+
+        for (Row row : rows) {
+            // ! Salta le righe che non contengono la colonna richiesta.
+            if (attributeIndex >= row.values.size()) {
+                continue;
+            }
+
+            String cellValue = row.values.get(attributeIndex);
+            double rowValue;
+
+            // * I valori sono String: li convertiamo in numeri per confrontarli.
+            try {
+                rowValue = Double.parseDouble(cellValue);
+            } catch (NumberFormatException | NullPointerException e) {
+                throw new IllegalArgumentException(
+                        "Valore non numerico nella colonna "
+                                + attribute + ": " + cellValue,
+                        e
+                );
+            }
+
+            boolean matches = false;
+
+            // * Verifica la condizione usando l'operatore richiesto.
+            switch (operator) {
+                case ">":
+                    matches = rowValue > value;
+                    break;
+                case "<":
+                    matches = rowValue < value;
+                    break;
+                case ">=":
+                    matches = rowValue >= value;
+                    break;
+                case "<=":
+                    matches = rowValue <= value;
+                    break;
+                case "==":
+                    matches = rowValue == value;
+                    break;
+                case "!=":
+                    matches = rowValue != value;
+                    break;
+            }
+
+            // * Copia soltanto le righe che rispettano la condizione.
+            if (matches) {
+                result.addRow(new Row(new ArrayList<>(row.values)));
+            }
+        }
+
+        return result;
+    }
+
+    /**
      * * PROIEZIONE: crea una relazione con le sole colonne richieste.
      * * Le righe duplicate nel risultato vengono eliminate.
      */

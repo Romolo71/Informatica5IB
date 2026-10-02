@@ -142,9 +142,6 @@ public class Main {
         System.out.println(francia);
         
         System.out.println("=== Nazioni con popolazione tra 100 e 200 milioni === \n ");
-        Relation pop100 = country.selection("Population", "100000000");
-        Relation pop200 = country.selection("Population", "200000000");
-        Relation pop100_200 = pop100.union(pop200);
-        System.out.println(pop100_200);
+        
     }
 }
