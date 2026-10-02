@@ -48,7 +48,7 @@ public class CSVLoader {
                 // * Divide la riga usando la virgola come separatore
                 // ? Esempio:
                 // ? "Mario,Rossi,22" -> ["Mario", "Rossi", "22"]
-                String[] campi = line.split(",");
+                String[] campi = line.replace("\"", "").split(",");
                 
                 
 

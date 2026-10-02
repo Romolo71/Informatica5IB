@@ -1,10 +1,30 @@
 public class Main {
 
+    public static void stampaTitolo(String titolo) {
+        int width = Math.max(60, titolo.length() + 4);
+        int spacing = width - titolo.length();
+        int leftSpacing = spacing / 2;
+        int rightSpacing = spacing - leftSpacing;
+        String blank = "║" + " ".repeat(width) + "║";
+
+        System.out.println();
+        System.out.println("╔" + "═".repeat(width) + "╗");
+        System.out.println(blank);
+        System.out.println("║" + " ".repeat(leftSpacing) + titolo + " ".repeat(rightSpacing) + "║");
+        System.out.println(blank);
+        System.out.println("╚" + "═".repeat(width) + "╝");
+        System.out.println();
+    }
+
     public static void main(String[] args) {
         Relation persone = new CSVLoader("Persone.csv").loadCSVinRelation();
         Relation altrePersone = new CSVLoader("Persone2.csv").loadCSVinRelation();
         Relation ordini = new CSVLoader("Ordini.csv").loadCSVinRelation();
         Relation prodotti = new CSVLoader("Prodotti.csv").loadCSVinRelation();
+
+        Relation city = new CSVLoader("Country_DBs/City.csv").loadCSVinRelation();
+        Relation country = new CSVLoader("Country_DBs/Country.csv").loadCSVinRelation();
+        Relation countryLanguage = new CSVLoader("Country_DBs/CountryLanguage.csv").loadCSVinRelation();
 
         int prezzoMax = 0;
         String idProdottoCostoso = "";
@@ -101,5 +121,30 @@ public class Main {
                 }
             }
         }
+
+        /*Utilizzando le funzioni realizzate nelle precedenti esercitazioni, leggi i seguenti files CSV e crea il codice per eseguire le seguenti interrogazioni:
+            - trova tutte le nazioni Europee
+            - trova tutte le città della Francia
+            - trova il nome delle nazioni che hanno una popolazione compresa tra 100 milioni e 200 milioni di abitanti
+            - trova, per tutte le nazioni del sud America, il nome della capitale, la popolazione e nome dello stato
+            - trova le nazioni asiatiche con numero di abitanti maggiore di quello del Giappone.
+            - trova per l’Italia, la  popolazione della città col maggior numero di abitanti e la popolazione della città col minor numero di abitanti
+            - trova tutte le nazioni in cui si parla inglese e non si parla francese 
+        */
+        stampaTitolo("PARTE 3: VISUALIZZAZIONE IN BASE AL DB COUNTRY'S");
+
+        System.out.println("=== Tutte le nazioni Europee === \n ");
+        Relation europe = country.selection("Continent", "Europe");
+        System.out.println(europe);
+
+        System.out.println("=== Tutte le città della Francia === \n ");
+        Relation francia = city.project("Name", "CountryCode").selection("CountryCode", "FRA");
+        System.out.println(francia);
+        
+        System.out.println("=== Nazioni con popolazione tra 100 e 200 milioni === \n ");
+        Relation pop100 = country.selection("Population", "100000000");
+        Relation pop200 = country.selection("Population", "200000000");
+        Relation pop100_200 = pop100.union(pop200);
+        System.out.println(pop100_200);
     }
 }
