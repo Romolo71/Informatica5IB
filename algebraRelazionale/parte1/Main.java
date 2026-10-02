@@ -144,7 +144,13 @@ public class Main {
         System.out.println("=== Nazioni con popolazione tra 100 e 200 milioni === \n ");
         Relation pop100 = country.selection("Population", ">=", 100000000);
         Relation pop200 = country.selection("Population", "<=", 200000000);
-        Relation pop100_200 = pop100.union(pop200);
-        System.out.println(pop100_200);
+        Relation pop100_200 = pop100.join(pop200, new String[]{"Name", "Name"});
+        System.out.println(pop100_200.project("Name", "Population"));
+
+        System.out.println("=== Nazioni del Sud America con nome capitale, popolazione e nome dello stato === \n ");
+        Relation sudAmerica = country.selection("Continent", "South America");
+        System.out.println(sudAmerica.project("Name", "Capital", "Population"));
+
+        System.out.println("=== Nazioni asiatiche con numero di abitanti maggiore di quello del Giappone === \n ");
     }
 }
