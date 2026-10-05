@@ -22,9 +22,9 @@ public class Main {
         Relation ordini = new CSVLoader("Ordini.csv").loadCSVinRelation();
         Relation prodotti = new CSVLoader("Prodotti.csv").loadCSVinRelation();
 
-        Relation city = new CSVLoader("Country_DBs/City.csv").loadCSVinRelation();
-        Relation country = new CSVLoader("Country_DBs/Country.csv").loadCSVinRelation();
-        Relation countryLanguage = new CSVLoader("Country_DBs/CountryLanguage.csv").loadCSVinRelation();
+        Relation city = new CSVLoader("Country_DBs/city.csv").loadCSVinRelation();
+        Relation country = new CSVLoader("Country_DBs/country.csv").loadCSVinRelation();
+        Relation countryLanguage = new CSVLoader("Country_DBs/countrylanguage.csv").loadCSVinRelation();
 
         int prezzoMax = 0;
         String idProdottoCostoso = "";
@@ -152,5 +152,36 @@ public class Main {
         System.out.println(sudAmerica.project("Name", "Capital", "Population"));
 
         System.out.println("=== Nazioni asiatiche con numero di abitanti maggiore di quello del Giappone === \n ");
+        Relation giappone = country.selection("Name", "Japan");
+        double popolazioneGiappone = Double.parseDouble(giappone.getRows().get(0).getValue(2));
+        Relation asia = country.selection("Continent", "Asia");
+        Relation asiaMaggioreGiappone = asia.selection("Population", ">", popolazioneGiappone);
+        System.out.println(asiaMaggioreGiappone.project("Name", "Population"));
+
+        System.out.println("=== Per l’Italia, la popolazione della città col maggior numero di abitanti e la popolazione della città col minor numero di abitanti === \n ");
+        Relation cittaIta = city.selection("CountryCode", "ITA");
+        double popMax = Double.MIN_VALUE;
+        double popMin = Double.MAX_VALUE;
+        String cittaMax = "";
+        String cittaMin = "";
+        for (Row r : cittaIta.getRows()) {
+            double pop = Double.parseDouble(r.getValue(3));
+            if (pop > popMax) {
+                popMax = pop;
+                cittaMax = r.getValue(1);
+            }
+            if (pop < popMin) {
+                popMin = pop;
+                cittaMin = r.getValue(1);
+            }
+        }
+        System.out.println("Città con maggior numero di abitanti: " + cittaMax + " con popolazione: " + popMax);
+        System.out.println("Città con minor numero di abitanti: " + cittaMin + " con popolazione: " + popMin);
+
+        System.out.println("=== Tutte le nazioni in cui si parla inglese e non si parla francese === \n ");
+        Relation englishSpeaking = countryLanguage.selection("Language", "English").selection("IsOfficial", "T");
+        Relation frenchSpeaking = countryLanguage.selection("Language", "French").selection("IsOfficial", "T");
+        Relation englishNotFrench = englishSpeaking.difference(frenchSpeaking);
+        System.out.println(englishNotFrench.project("CountryCode", "Language"));
     }
 }
