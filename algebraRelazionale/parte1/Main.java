@@ -179,9 +179,9 @@ public class Main {
         System.out.println("Città con minor numero di abitanti: " + cittaMin + " con popolazione: " + popMin + "\n");
 
         System.out.println("=== Tutte le nazioni in cui si parla inglese e non si parla francese === \n ");
-        Relation englishSpeaking = countryLanguage.selection("Language", "English").selection("IsOfficial", "T");
-        Relation frenchSpeaking = countryLanguage.selection("Language", "French").selection("IsOfficial", "T");
+        Relation englishSpeaking = countryLanguage.selection("Language", "English").selection("IsOfficial", "T").project("CountryCode");
+        Relation frenchSpeaking = countryLanguage.selection("Language", "French").selection("IsOfficial", "T").project("CountryCode");
         Relation englishNotFrench = englishSpeaking.difference(frenchSpeaking);
-        System.out.println(englishNotFrench.project("CountryCode", "Language"));
+        System.out.println(englishNotFrench.join(country, new String[]{"CountryCode", "Code"}).project("Name"));
     }
 }
