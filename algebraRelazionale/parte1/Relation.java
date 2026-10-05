@@ -387,4 +387,20 @@ public class Relation {
         
         return new Relation(prodotto.getHeader(), righe);
     }
+
+    public Relation rename(String oldName, String newName){
+        int index = header.indexOf(oldName);
+        
+        // ! Controllo che l'attributo da rinominare esista
+        if (index == -1) {
+            throw new IllegalArgumentException("Attributo non trovato");
+        }
+
+        // ! Creo una copia in quanto ogni funzione di algebra 
+        // ! relazionale deve restituire una nuova relazione 
+        // ! senza modificare quella originale
+        Relation result = new Relation(header, rows);
+        result.header.set(index, newName);
+        return result;
+    }
 }
